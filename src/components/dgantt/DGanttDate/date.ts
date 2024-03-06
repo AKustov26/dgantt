@@ -1,21 +1,21 @@
-import { computed } from "vue";
+import { computed, type Ref } from "vue";
 import { addDay, getDatesInRange } from "./date.utils";
 import type { ListDates } from "./date.types";
 
-export function useBuildScale(startDate: Date, endDate: Date) {
+export function useBuildScale(startDate: Ref<Date>, endDate: Ref<Date>) {
     /**
      * Старотовая дата на шкале диаграммы Ганта
      * 
      * @description добавляем дни к стартовой дате, чтобы был пустой запас у диаграммы слева
      */
-    const startDateScale = computed<Date>(() => addDay(startDate, 1));
+    const startDateScale = computed<Date>(() => addDay(startDate.value, 1));
 
     /**
      * Конечная дата на шкале диаграммы Ганта
      * 
      * @description добавляем дни к стартовой дате, чтобы был пустой запас у диаграммы справа
      */
-    const endDateScale = computed<Date>(() => addDay(endDate, 1));
+    const endDateScale = computed<Date>(() => addDay(endDate.value, 1));
 
     /**
      * Массив всех дат межну стартовой и конечно датой
@@ -26,6 +26,9 @@ export function useBuildScale(startDate: Date, endDate: Date) {
      * Список всех дат для шкалы диаграммы Ганта с разбивкой на года/месяца/дни
      */
     const listDateScale = computed<ListDates>(() => {
+        console.log(startDateScale.value);
+        console.log(endDateScale.value);
+        
         const listDates: ListDates = {
             years: [],
             months: [],

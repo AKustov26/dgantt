@@ -1,19 +1,21 @@
-import type { DatePeriod } from './date.types';
-
 /**
  * Добавление дней к дате
  * 
  * @param date дата
  * @param countDay кол-во дней
+ * @returns
  */
-export function addDayStrings(date: string, countDay: number): number {
-    return new Date(date).getDate() + countDay;
-}
-
 export function addDay(date: Date, countDay: number): Date {
     return new Date(date.setDate(date.getDate() + countDay));
 }
 
+/**
+ * Возвращает массив дат между двумя датами
+ * 
+ * @param startDate - начальная дата
+ * @param endDate - конечная дата
+ * @returns
+ */
 export function getDatesInRange(startDate: Date, endDate: Date): Date[] {
     const dateArray = [];
     const currentDate = startDate;
@@ -27,45 +29,24 @@ export function getDatesInRange(startDate: Date, endDate: Date): Date[] {
 }
 
 /**
- * Возвращает сконвертированный период дат в формате Date
+ * Возвращает результат проверки на минимальную дату
  * 
- * @param sdt Начальная дата
- * @param duration Продолжительность в днях
+ * @param currentMinDate - текущая минимальная дата
+ * @param date - новая дата
+ * @returns 
  */
-export function getConvertDatePeriod(sdt: string, duration: number): DatePeriod {
-    return {
-        startDate: new Date(sdt),
-        endDate: new Date(new Date(sdt).setDate(addDayStrings(sdt, duration))),
-    }
+export function isMinDate(currentMinDate: Date, date: Date): boolean {
+    return currentMinDate.getTime() > date.getTime();
 }
 
 /**
- * Возвращает наибольшую дату из массива
+ * Возвращает результат проверки на масимальную дату
  * 
- * @param arrDates Массив дат
+ * @param currentMaxDate - текущая максимальная дата
+ * @param date - новая дата
+ * @returns 
  */
-export function getMaxDate(arrDates: DatePeriod[]) {
-    return new Date(
-        Math.max(
-            ...arrDates.map((date) => {
-                return new Date(date.endDate).getTime();
-            }),
-        ),
-    );
-}
-
-/**
- * Возвращает наименьшую дату из массива
- * 
- * @param arrDates Массив дат
- */
-export function getMinDate(arrDates: DatePeriod[]) {
-    return new Date(
-        Math.min(
-            ...arrDates.map((date) => {
-                return new Date(date.startDate).getTime();
-            }),
-        ),
-    );
+export function isMaxDate(currentMaxDate: Date, date: Date): boolean {
+    return currentMaxDate.getTime() < date.getTime();
 }
 
