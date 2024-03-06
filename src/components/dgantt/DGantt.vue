@@ -3,15 +3,15 @@
         <div class="control"></div>
         <DGanttDate></DGanttDate>
         <div class="diagram"></div>
+        {{ listDateScale }}
     </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import DGanttDate from './DGanttDate/DGanttDate.vue';
-import type { DatePeriod } from './DGanttDate/date.types';
-import { getConvertDatePeriod, getMaxDate, getMinDate } from './DGanttDate/date.utils';
 import { useBuildGannt } from './dgantt';
+import { useBuildScale } from './DGanttDate/date';
 
 const tasks = {
     data: [
@@ -81,36 +81,15 @@ const tasks = {
 
 const {
     buildStructur,
-    isMaxDate,
-    setEndDate,
+    minDate,
+    maxDate,
 } = useBuildGannt(tasks);
 
-/**
- * Сконвертированный период дат в формате Date
- */
-const arrDates: DatePeriod[] = tasks.data.map((task) => {
-    return getConvertDatePeriod(task.start_date, task.duration);
-});
+const { listDateScale } = useBuildScale(minDate, maxDate);
 
-/**
- * Наибольшая дата из массива
- */
-const maxDate = getMaxDate(arrDates);
-
-/**
- * Наименьшая дата из массива
- */
-const minDate = getMinDate(arrDates);
-
-console.log(minDate);
-console.log(maxDate);
+console.log(listDateScale.value);
 
 onMounted(() => {
-    
     buildStructur();
-   
-    if (isMaxDate(new Date('02.02.2027'))) {
-        setEndDate(new Date('02.02.2027'));
-    }
 });
 </script>
