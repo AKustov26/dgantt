@@ -3,8 +3,15 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "target": "ES2018",
     "composite": true,
     "noEmit": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
