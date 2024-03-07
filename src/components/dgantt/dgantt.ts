@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import type { StructurGantt, Tasks } from "./dgantt.types";
 import type { Ref } from "vue";
 
@@ -8,16 +8,6 @@ import type { Ref } from "vue";
  * @param tasks список задач
  */
 export function useBuildGannt(tasks: Ref<Tasks>) {
-    /**
-     * Начальная дата для шкалы
-     */
-    const minDate = ref<Date>(new Date());
-
-    /**
-     * Конечная дата для шкалы
-     */
-    const maxDate = ref<Date>(new Date());
-
     /**
      * Парсинг данных из обекта tasks в структуру для диграммы Ганта
      */
@@ -52,29 +42,7 @@ export function useBuildGannt(tasks: Ref<Tasks>) {
         }
     })
     
-    /**
-     * Записывает новое значение для минимальной даты
-     * 
-     * @param date новая дата
-     */
-    function setMinDate(date: Date): void {
-        minDate.value = date;
-    }
-
-    /**
-     * Записывает новое значение для максимальной даты
-     * 
-     * @param date новая дата
-     */
-    function setMaxDate(date: Date): void {
-        maxDate.value = date;
-    }
-
     return {
         structurGantt,
-        setMinDate,
-        setMaxDate,
-        minDate,
-        maxDate,
     };
 }
