@@ -3,93 +3,46 @@
         <div class="control"></div>
         <DGanttDate></DGanttDate>
         <div class="diagram"></div>
+        {{ structurGantt }}
         {{ listDateScale }}
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { toRefs, computed } from 'vue';
 import DGanttDate from './DGanttDate/DGanttDate.vue';
 import { useBuildGannt } from './dgantt';
 import { useBuildScale } from './DGanttDate/date';
+import type { Tasks } from './dgantt.types';
 
-const tasks = {
-    data: [
-        {
-            id: 10,
-            text: 'Project #1',
-            start_date: '2025-01-01',
-            duration: 3,
-            order: 10,
-            progress: 0.4,
-            open: true
-        },
-        {
-            id: 1,
-            text: 'Task #1',
-            start_date: '2025-12-30',
-            duration: 2,
-            order: 10,
-            progress: 0.6,
-            parent: 10
-        },
-        {
-            id: 2,
-            text: 'Task #2',
-            start_date: '2025-01-01',
-            duration: 2,
-            order: 20,
-            progress: 0.6,
-            parent: 10
-        },
-        {
-            id: 20,
-            text: 'Project #2',
-            start_date: '2025-01-14',
-            duration: 3,
-            order: 10,
-            progress: 0.4,
-            type: 'project',
-            open: true
-        },
-        {
-            id: 3,
-            text: 'Task #3',
-            start_date: '2025-01-01',
-            duration: 2,
-            order: 10,
-            progress: 0.6,
-            parent: 20
-        },
-        {
-            id: 4,
-            text: 'Task #4',
-            start_date: '2025-01-01',
-            duration: 2,
-            order: 20,
-            progress: 0.6,
-            parent: 20
-        }
-    ],
-    links: [
-        { id: 1, source: 1, target: 2, type: 0 },
-        { id: 2, source: 2, target: 3, type: 0 },
-        { id: 3, source: 3, target: 4, type: 0 },
-        { id: 4, source: 2, target: 5, type: 0 }
-    ]
+
+interface PropsDGantt {
+    /**
+     * Загрузка информации
+     */
+    tasks: Tasks;
 }
 
-const {
-    buildStructur,
-    minDate,
-    maxDate,
-} = useBuildGannt(tasks);
+const props = withDefaults(defineProps<PropsDGantt>(), {});
 
-const { listDateScale } = useBuildScale(minDate, maxDate);
+const { tasks } = toRefs(props);
 
-console.log(listDateScale.value);
+const { structurGantt } = useBuildGannt(tasks);
 
-onMounted(() => {
-    buildStructur();
-});
+const startDate = computed(() => structurGantt.value.minDate);
+const endDate = computed(() => structurGantt.value.maxDate);
+
+const { listDateScale } = useBuildScale(startDate, endDate);
+
+setTimeout(() => {
+    tasks.value.data.push({
+            id: 53,
+            text: 'Task #54',
+            start_date: '2023-01-01',
+            duration: 2,
+            order: 20,
+            progress: 0.6,
+            parent: 20
+        })
+}, 2000);
 </script>

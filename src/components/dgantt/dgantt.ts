@@ -1,12 +1,13 @@
-import { ref } from "vue";
-import type { Tasks } from "./dgantt.types";
+import { computed, ref } from "vue";
+import type { StructurGantt, Tasks } from "./dgantt.types";
+import type { Ref } from "vue";
 
 /**
  * Построение структуры данных для диаграммы Ганнта
  * 
  * @param tasks список задач
  */
-export function useBuildGannt(tasks: Tasks) {
+export function useBuildGannt(tasks: Ref<Tasks>) {
     /**
      * Начальная дата для шкалы
      */
@@ -16,33 +17,40 @@ export function useBuildGannt(tasks: Tasks) {
      * Конечная дата для шкалы
      */
     const maxDate = ref<Date>(new Date());
-    
-    function buildStructur() {
+
+    /**
+     * Парсинг данных из обекта tasks в структуру для диграммы Ганта
+     */
+    const structurGantt = computed<StructurGantt>(() => {
         let i;
+        let minDate = new Date();
+        let maxDate = new Date();
         
-        for (i = 0; i < tasks.data.length; i++) {
-            const data = tasks.data[i];
+        for (i = 0; i < tasks.value.data.length; i++) {
+            const data = tasks.value.data[i];
             const sdt = data.start_date;
             const edt = new Date(sdt).setDate(new Date(sdt).getDate() + data.duration);
             
             if (i === 0) {
-                minDate.value = new Date(sdt);
-                maxDate.value = new Date(edt);
+                minDate = new Date(sdt);
+                maxDate = new Date(edt);
                 continue;
             }
             
-            if (minDate.value.getTime() > new Date(sdt).getTime()) {
-                minDate.value = new Date(sdt);
+            if (minDate.getTime() > new Date(sdt).getTime()) {
+                minDate = new Date(sdt);
             }
 
-            if (maxDate.value && maxDate.value.getTime() < new Date(edt).getTime()) {
-                maxDate.value = new Date(edt);
+            if (maxDate && maxDate.getTime() < new Date(edt).getTime()) {
+                maxDate = new Date(edt);
             }
         }
 
-        console.log(minDate.value);
-        console.log(maxDate.value);
-    }
+        return {
+            minDate,
+            maxDate,
+        }
+    })
     
     /**
      * Записывает новое значение для минимальной даты
@@ -63,7 +71,7 @@ export function useBuildGannt(tasks: Tasks) {
     }
 
     return {
-        buildStructur,
+        structurGantt,
         setMinDate,
         setMaxDate,
         minDate,

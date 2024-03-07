@@ -30,3 +30,8 @@ export interface Tasks {
     data: TasksData[],
     links: TasksLinks[],
 }
+
+export interface StructurGantt {
+    minDate: Date,
+    maxDate: Date,
+}
