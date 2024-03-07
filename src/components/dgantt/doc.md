@@ -1,3 +1,7 @@
+<!-- // const saved = ref<SaveData[]>(_getData()); -->
+
+// TODO: Как строить левый блок с задачами ?
+// TODO: Как строить блоки задач на диаграмме ?
 // TODO: watch на startDate/endDate ?
 // TODO: функции оставляем в composobles ?
 // TODO: добавить построение массива с датами, месяцами, годами
