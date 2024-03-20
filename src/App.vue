@@ -1,9 +1,5 @@
 <template>
-  <main>
-    <template v-if="!isLoading && tasks">
-        <DGannt :tasks="tasks" />
-    </template>
-  </main>
+    <DGannt v-if="!isLoading && tasks" :tasks="tasks" />
 </template>
 
 <script setup lang="ts">
@@ -29,7 +25,7 @@ const response = {
         {
             id: 1,
             text: 'Task #1',
-            start_date: '2025-12-30',
+            start_date: '2025-01-01',
             duration: 2,
             order: 10,
             progress: 0.6,
@@ -47,8 +43,8 @@ const response = {
         {
             id: 20,
             text: 'Project #2',
-            start_date: '2025-01-14',
-            duration: 3,
+            start_date: '2025-01-30',
+            duration: 1,
             order: 10,
             progress: 0.4,
             type: 'project',

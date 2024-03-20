@@ -1,10 +1,10 @@
 <template>
     <div class="wrap">
         <div class="control"></div>
-        <DGanttDate></DGanttDate>
-        <div class="diagram"></div>
-        {{ structurGantt }}
-        {{ listDateScale }}
+        <div class="area">
+            <DGanttDate :dates="listDateScale"></DGanttDate>
+            <div class="diagram"></div>
+        </div>
     </div>
 </template>
 
@@ -38,7 +38,7 @@ setTimeout(() => {
     tasks.value.data.push({
             id: 53,
             text: 'Task #54',
-            start_date: '2023-01-01',
+            start_date: '2025-01-01',
             duration: 2,
             order: 20,
             progress: 0.6,
@@ -46,3 +46,20 @@ setTimeout(() => {
         })
 }, 2000);
 </script>
+
+<style lang="scss">
+.wrap {
+    display: flex;
+    align-items: start;
+
+    > .control {
+        width: 450px;
+        height: 100%;
+    }
+
+    > .area {
+        width: calc(100% - 450px);
+        height: 100%;
+    }
+}
+</style>
